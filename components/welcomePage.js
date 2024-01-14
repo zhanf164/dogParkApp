@@ -40,6 +40,10 @@ const Welcome = () => {
                 name="LocationPage" 
                 component={LocationPage}
             />
+            <Stack.Screen
+                name="DogParkPage"
+                component={DogParkPage}
+            />
         </Stack.Navigator>
     )
 }

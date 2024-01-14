@@ -4,7 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import Welcome from './components/welcomePage';
 
 export default function App() {
-  console.log("this is a test print")
   return (
     <NavigationContainer>
       <Welcome></Welcome>
