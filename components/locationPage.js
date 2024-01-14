@@ -1,6 +1,7 @@
 import {React, useState, useEffect} from 'react';
 import {Button, View, SafeAreaView, Text} from 'react-native';
 import * as Location from 'expo-location';
+import DogParkPage from './dogParkPage';
 
 
 class GeocodingRequest{
@@ -61,30 +62,44 @@ const HasLocationView = ({isError, lat, long, navigation}) => {
     // otherwise, if the location is known we should use the lat and long to get the city the user is inf and ask them if they would like to proceed with that location.
     
     else{
-        requester = new GeocodingRequest(lat, long)
-        console.log("The request is: " + requester.request)
-        requester.getLocationFromLatLong()
-            .then(
-                (address) => {
-                    console.log(address)
-                    setUserAddress(address)
-                })
-            .catch((error) => console.log('there was an error fetching the address' + error))
+        if(userAddress == "Null"){
+            requester = new GeocodingRequest(lat, long)
+            console.log("The request is: " + requester.request)
+            requester.getLocationFromLatLong()
+                .then(
+                    (address) => {
+                        console.log(address)
+                        setUserAddress(address)
+                    })
+                .catch((error) => console.log('there was an error fetching the address' + error))
+        }
+        else{
+            return(
+                <SafeAreaView>
+                    <Text>It looks like your address is close to: </Text>
+                    <Text>{userAddress}</Text>
+                    <Button onPress={() => 
+                        navigation.navigate(
+                            'DogParkPage',
+                                
+                            {
+                                "latitude": lat,
+                                "longitude": long
+                            }
+                        )
+                        }
+                        title='Use this address to find dog parks!'></Button>
+                </SafeAreaView>
+            )
+        }
             
-        return(
-            <SafeAreaView>
-                <Text>It looks like your address is close to: </Text>
-                <Text>{userAddress}</Text>
-                <Button onPress={() => navigation.navigate('LocationPage')} title='Use this address to find dog parks!'></Button>
-            </SafeAreaView>
-        )
     }
 
 }
  
 
 
-const LocationPage = () => {
+const LocationPage = ({navigation}) => {
     const [hasLocationAccess, setHasLocationAccess] = useState(false);
     if (!hasLocationAccess){
         console.log("Does not have location access " + hasLocationAccess)
@@ -94,8 +109,6 @@ const LocationPage = () => {
     const [errorMsg, setErrorMsg] = useState(null);
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
-
-    const[userLocationHasBeenConfirmed, setUserLocationHasBeenConfirmed] = useState(false)
   
     useEffect(() => {
         (async () => {
@@ -148,7 +161,7 @@ const LocationPage = () => {
             <Button
                 onPress={getLocationButtonClicked} title="Get current Location"
             />
-            {currentLocation == 'known'? <HasLocationView isError={errorMsg} lat={latitude} long={longitude}></HasLocationView>:<View></View>} 
+            {currentLocation == 'known'? <HasLocationView isError={errorMsg} lat={latitude} long={longitude} navigation={navigation}></HasLocationView>:<View></View>} 
 
         </SafeAreaView>
     )

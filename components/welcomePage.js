@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {Button, View, SafeAreaView, Text} from 'react-native';
 //import Geolocation from 'react-native-geolocation-service'; //I think this is not supported on expo, need to use expo location
 import LocationPage from './locationPage';
+import DogParkPage from './dogParkPage';
 
 
 const Stack = createNativeStackNavigator()
