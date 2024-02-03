@@ -20,6 +20,7 @@
     "graphql": "^16.8.1",
     "install": "^0.13.0",
     "npm": "^10.3.0",
+    "package.json": "^2.0.1",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-config": "^1.5.1",
