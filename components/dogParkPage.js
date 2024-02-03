@@ -105,10 +105,6 @@ const DogParkPage = ({route, navigation}) => {
                 <Text>
                     Default Search Radius = 3 Miles 
                 </Text>
-                <Text>
-                    Another placeholder
-                </Text>
-                
                 <Text>Dog Parks that were found: </Text>
                 <View>
                     <GoogleMap props={{
