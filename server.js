@@ -5,12 +5,79 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 // that together define the "shape" of queries that are executed against
 // your data.
 const typeDefs = `#graphql
-  type Book {
-    title: String
-    author: String
+
+  enum Sex{
+    MALE
+    FEMALE
+    NA
   }
+
+  type User{
+    id: ID!
+    username: String
+    password: String
+    firstName: String
+    lastName: String
+    dogs: [Dog] 
+    dogParksVisited: [DogPark]
+    email: String
+    homeCoords: String
+    nearbyParks: [DogPark] 
+  }
+
+  type Dog{
+    id: ID!
+    firstName: String
+    lastName: String
+    owner: User!
+    breed: String
+    color: String
+    age: Int
+    weight: Int
+    sex: Sex 
+    picture: String  # for now a path to a picture or something like that? 
+
+  }
+  
+  type DogPark{
+    id: ID!
+    name: String
+    address: String
+    currentDogs: [Dog]
+    previousDogs: [Dog]
+    uniqueDogs: Int
+    uniqueDogBreeds: [String]
+  }
+
+
+  type Query{
+    users: [User]
+    dogs: [Dog]
+    dogParks: [DogPark]
+    user(id: ID!): User 
+    dog(id: ID!): Dog
+    dogPark(id: ID!): DogPark
+  }
+
+
+  type Mutation{
+    addUser(id: ID, username: String, password: String, firstName: String, lastName: String, email: String): User
+
+  }
+
+type Book {
+  title: String
+  author: Author
+}
+
+type Author {
+  name: String
+  books: [Book]
+}
+
   type Query {
     books: [Book]
+    authors: [Author]
   }
 `;
 
