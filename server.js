@@ -49,8 +49,35 @@ const typeDefs = `#graphql
     uniqueDogBreeds: [String]
   }
 
+
+  type Query{
+    users: [User]
+    dogs: [Dog]
+    dogParks: [DogPark]
+    user(id: ID!): User 
+    dog(id: ID!): Dog
+    dogPark(id: ID!): DogPark
+  }
+
+
+  type Mutation{
+    addUser(id: ID, username: String, password: String, firstName: String, lastName: String, email: String): User
+
+  }
+
+type Book {
+  title: String
+  author: Author
+}
+
+type Author {
+  name: String
+  books: [Book]
+}
+
   type Query {
     books: [Book]
+    authors: [Author]
   }
 `;
 
