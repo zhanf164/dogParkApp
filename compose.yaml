@@ -1,0 +1,9 @@
+services:
+  expo-react-native-app:
+    image: docker-images/react-native-app
+
+  apollo-graphql-server:
+    image: docker-images/server
+
+  posgres:
+    image: postgres:latest
