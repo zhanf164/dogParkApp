@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
-import {SafeAreaView, View, Text, FlatList} from 'react-native';
+import {SafeAreaView, View, Text, FlatList, ScrollView} from 'react-native';
+import GoogleMap from "./googleMap";
 
 class GooglePlacesRequest{
     constructor(
@@ -47,7 +48,7 @@ class GooglePlacesRequest{
     generateHeaders(){
         return new Headers({
             "Content-Type": "application/json",
-            "X-Goog-FieldMask": "places.displayName,places.formattedAddress",
+            "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.location",
             "X-Goog-Api-Key": this.api_key
 
         })
@@ -78,22 +79,12 @@ class GooglePlacesRequest{
 }
 
 
-const DogParkItem = ({placeName, placeAddress}) => {
-    return(
-        <View>
-            <Text>{placeName}</Text>
-            <Text>{placeAddress}</Text>
-            <Text>-----------------</Text>
-        </View>
-    )
-}
-
 const DogParkPage = ({route, navigation}) => {
     // these won't change, so no need to make them stateful 
     const {latitude, longitude} = route.params
     console.log(latitude, longitude)
 
-    const [foundPlaces, setFoundPlaces] = useState([])
+    const [foundPlaces, setFoundPlaces] = useState({"places":[]})
    
     useEffect(() => {
         requester = new GooglePlacesRequest(latitude, longitude)
@@ -101,31 +92,30 @@ const DogParkPage = ({route, navigation}) => {
             .then(
                 (places) => {
                     console.log(places)
-                    console.log(places.places[0].displayName)
-                    setFoundPlaces(places.places)
+                    console.log(places.places[0].location)
+                    setFoundPlaces(places)
                 })
             .catch((error) => console.log('there was an error fetching the places' + error)
         )
         return () => {}
     }, [])
-    
+     
     return(
-        <SafeAreaView>
-            <Text>
-                Default Search Radius = 3 Miles 
-            </Text>
-            <Text>
-                Another placeholder
-            </Text>
-            <Text>Dog Parks that were found: </Text>
-            <FlatList
-                data={foundPlaces}
-                renderItem={({item}) => <DogParkItem placeName={item.displayName.text} placeAddress={item.formattedAddress}/>}
-                keyExtractor={item => item.displayName.text}
-            >
+        <View style={{flex: 1}}>
+                <Text>
+                    Default Search Radius = 3 Miles 
+                </Text>
+                <Text>Dog Parks that were found: </Text>
+                <View>
+                    <GoogleMap props={{
+                            "latitude": latitude,
+                            "longitude": longitude,
+                            "locations": foundPlaces.places
+                    }} />                        
+                   
+                </View>
 
-            </FlatList>
-        </SafeAreaView>
+        </View>
     )
 }
 

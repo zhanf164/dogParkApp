@@ -71,7 +71,14 @@ const HasLocationView = ({isError, lat, long, navigation}) => {
                         console.log(address)
                         setUserAddress(address)
                     })
-                .catch((error) => console.log('there was an error fetching the address' + error))
+                .catch(  // in this case we have an error fetching the address, instead we should allow the user to input thier own address to find nearby dogparks
+                    (error) => {
+                        console.log('there was an error fetching the address' + error)
+                        return(
+                            <Text>Cannot get address from current locaiton </Text>
+                        )
+                    
+                    })
         }
         else{
             return(
@@ -96,7 +103,6 @@ const HasLocationView = ({isError, lat, long, navigation}) => {
     }
 
 }
- 
 
 
 const LocationPage = ({navigation}) => {
@@ -146,7 +152,7 @@ const LocationPage = ({navigation}) => {
             setLongitude(location.coords.longitude);
             setCurrentLocation("known")
         })
-        .catch((errorReason) => {setErrorMsg(errorReason)})
+        .catch((errorReason) => setErrorMsg(errorReason))
     }
 
     return (
@@ -154,6 +160,7 @@ const LocationPage = ({navigation}) => {
             <Text>
                 Your current location is {currentLocation}
             </Text>
+
             <Text>
                 Lat: {latitude}
                 long: {longitude}
