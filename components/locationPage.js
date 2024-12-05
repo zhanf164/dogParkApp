@@ -155,6 +155,9 @@ const LocationPage = ({navigation}) => {
                 Your current location is {currentLocation}
             </Text>
             <Text>
+                Put this in here for fun to see if it shows up.
+            </Text>
+            <Text>
                 Lat: {latitude}
                 long: {longitude}
             </Text>
